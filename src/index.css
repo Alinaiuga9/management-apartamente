@@ -1,3 +1,21 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Această parte forțează culorile chiar dacă Tailwind e blocat */
+body {
+  background-color: #1c1c1c !important;
+  color: white !important;
+  margin: 0;
+  font-family: sans-serif;
+}
+
+/* Facem titlurile și textele vizibile */
+h1, h2, h3, p, span, div {
+  color: white !important;
+}
+
+/* Butoanele să rămână cu textul lor, dar să fie vizibile */
+button {
+  cursor: pointer;
+}
