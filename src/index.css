@@ -2,20 +2,28 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Această parte forțează culorile chiar dacă Tailwind e blocat */
+html {
+  scroll-behavior: smooth;
+}
+
 body {
-  background-color: #1c1c1c !important;
-  color: white !important;
   margin: 0;
-  font-family: sans-serif;
+  padding: 0;
+  background-color: #1f1f1f;
+  color: white;
+  font-family: Inter, Arial, Helvetica, sans-serif;
 }
 
-/* Facem titlurile și textele vizibile */
-h1, h2, h3, p, span, div {
-  color: white !important;
+* {
+  box-sizing: border-box;
 }
 
-/* Butoanele să rămână cu textul lor, dar să fie vizibile */
-button {
-  cursor: pointer;
+#root {
+  width: 100%;
+  min-height: 100vh;
+}
+
+img {
+  display: block;
+  max-width: 100%;
 }

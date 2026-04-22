@@ -1,98 +1,376 @@
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
+import logo from './assets/logo.png';
 
-function Dashboard({ chiriasi = [] }) {
+function Dashboard() {
   const [meniuDeschis, setMeniuDeschis] = useState(false);
 
-  return (
-    <div className="min-h-screen bg-[#1c1c1c] text-white font-sans relative">
-      
-      {/* NAVBAR */}
-      <nav className="bg-[#1f242d] p-4 shadow-md flex justify-between items-center border-b border-gray-700 relative z-20">
-        <div className="flex items-center space-x-4">
-          <button 
-            onClick={() => setMeniuDeschis(!meniuDeschis)}
-            className="p-2 border border-gray-500 rounded hover:bg-gray-700 transition"
-          >
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              {meniuDeschis ? (
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
-              ) : (
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16" />
-              )}
-            </svg>
-          </button>
-          
-          <div className="flex items-center space-x-2">
-            <div className="font-bold text-[#1abc9c]">NCL</div>
-            <div className="text-sm font-bold">New Concept Living</div>
-          </div>
-        </div>
+  const features = [
+    {
+      titlu: 'Organized tenant documents',
+      text: 'Store and access leases, IDs, and files securely in one place.',
+      icon: '📁',
+    },
+    {
+      titlu: 'Streamlined rent invoicing',
+      text: 'Automate invoice creation, delivery, and payment tracking.',
+      icon: '💳',
+    },
+    {
+      titlu: 'Maintenance made simple',
+      text: 'Track repair requests and keep tenants informed from start to finish.',
+      icon: '🛠️',
+    },
+    {
+      titlu: 'Clear tenant communication',
+      text: 'Manage updates, notices, and conversations in a clean workflow.',
+      icon: '💬',
+    },
+  ];
 
-        <Link to="/contact">
-          <button className="bg-[#1abc9c] hover:bg-[#16a085] text-white px-4 py-2 rounded font-medium transition">
+  const plans = [
+    {
+      nume: 'STARTER',
+      pret: '$19/mo',
+      beneficii: ['Tenant document uploads', 'Basic invoice tracking', 'Maintenance tickets'],
+    },
+    {
+      nume: 'GROWTH',
+      pret: '$29/mo',
+      beneficii: ['Automated rent reminders', 'Recurring invoices', 'Priority support'],
+    },
+    {
+      nume: 'PRO',
+      pret: '$49/mo',
+      beneficii: ['Custom document templates', 'Bulk invoice generation', 'Advanced reports'],
+    },
+    {
+      nume: 'ENTERPRISE',
+      pret: '$79/mo',
+      beneficii: ['Custom integrations', 'Dedicated account manager', 'Full support'],
+    },
+  ];
+
+  const testimoniale = [
+    {
+      nume: 'Jamie Ellis',
+      rol: 'Operations Lead',
+      mesaj: 'Lease management is simple and efficient.',
+    },
+    {
+      nume: 'Robin Avery',
+      rol: 'Leasing Manager',
+      mesaj: 'Tracking invoices is quick and reliable.',
+    },
+    {
+      nume: 'Taylor Reed',
+      rol: 'Property Coordinator',
+      mesaj: 'Maintenance issues are resolved promptly.',
+    },
+    {
+      nume: 'Casey Jordan',
+      rol: 'Portfolio Manager',
+      mesaj: 'We save valuable time every week.',
+    },
+  ];
+
+  return (
+    <div className="min-h-screen bg-[#1f1f1f] text-white">
+      <nav className="sticky top-0 z-50 border-b border-white/10 bg-[#1f1f1f]/95 backdrop-blur">
+        <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
+          <div className="flex items-center gap-4">
+            <button
+              onClick={() => setMeniuDeschis(!meniuDeschis)}
+              className="flex h-11 w-11 items-center justify-center rounded-xl border border-white/15 bg-white/5 hover:bg-white/10 transition"
+            >
+              <div className="flex flex-col gap-1.5">
+                <span className="block h-[2px] w-5 rounded-full bg-white"></span>
+                <span className="block h-[2px] w-5 rounded-full bg-white"></span>
+                <span className="block h-[2px] w-5 rounded-full bg-white"></span>
+              </div>
+            </button>
+
+            <div className="flex items-center gap-3">
+              <img
+                src={logo}
+                alt="New Concept Living logo"
+                className="h-12 w-12 rounded-xl object-cover"
+              />
+              <div>
+                <p className="text-base font-semibold leading-5 text-white">New Concept</p>
+                <p className="text-sm text-gray-400">Living</p>
+              </div>
+            </div>
+          </div>
+
+          <button className="rounded-xl bg-blue-600 px-5 py-2.5 text-sm font-medium text-white shadow-md hover:bg-blue-700 transition">
             Contactează-ne
           </button>
-        </Link>
+        </div>
+
+        {meniuDeschis && (
+          <div className="border-t border-white/10 bg-[#232323]">
+            <div className="mx-auto grid max-w-7xl gap-3 px-6 py-4 md:grid-cols-5">
+              <Link to="/" className="rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm font-medium hover:bg-white/10 transition">
+                Home
+              </Link>
+              <Link to="/contact" className="rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm font-medium hover:bg-white/10 transition">
+                Contact
+              </Link>
+              <Link to="/facturi" className="rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm font-medium hover:bg-white/10 transition">
+                Invoice Management
+              </Link>
+              <Link to="/mentenanta" className="rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm font-medium hover:bg-white/10 transition">
+                Maintenance Requests
+              </Link>
+              <Link to="/documente" className="rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm font-medium hover:bg-white/10 transition">
+                Tenant Documents
+              </Link>
+            </div>
+          </div>
+        )}
       </nav>
 
-      {/* MENIUL LATERAL */}
-      {meniuDeschis && (
-        <div className="absolute top-[73px] left-0 w-64 bg-[#1f242d] border-r border-b border-gray-700 shadow-2xl z-10 p-4">
-          <ul className="space-y-4">
-            <li><Link to="/" className="hover:text-[#1abc9c] block">Home</Link></li>
-            <li><Link to="/contact" className="hover:text-[#1abc9c] block">Contact</Link></li>
-            <li><Link to="/facturi" className="hover:text-[#1abc9c] block">Invoice Management</Link></li>
-            <li><Link to="/mentenanta" className="hover:text-[#1abc9c] block">Maintenance Requests</Link></li>
-          </ul>
-        </div>
-      )}
+      <section className="bg-[#1f1f1f]">
+        <div className="mx-auto grid max-w-7xl items-center gap-14 px-6 py-16 md:px-8 lg:grid-cols-2 lg:py-24">
+          <div className="max-w-2xl">
+            <p className="mb-4 text-sm uppercase tracking-[0.25em] text-gray-400">
+              Smart rental platform
+            </p>
 
-      {/* CONȚINUTUL PAGINII */}
-      <main className="p-6">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          
-          {/* Sectiunea Chiriași */}
-          <div className="bg-[#242424] p-4 rounded-lg border-t-4 border-[#1abc9c]">
-            <h2 className="text-lg font-semibold mb-4">Chiriași - acte</h2>
-            
-            {/* Lista automată cu designul nou */}
-            {chiriasi.map((c) => (
-              <div key={c.id} className="bg-[#1c1c1c] p-3 rounded border border-gray-700 mb-2">
-                <p className="font-bold">{c.nume} - Ap. {c.ap}</p>
-                <p className="text-sm">Status: {c.status}</p>
+            <h1 className="text-5xl font-light leading-[0.95] tracking-tight text-white sm:text-6xl lg:text-7xl">
+              Effortless rental management, simplified
+            </h1>
+
+            <p className="mt-8 max-w-xl text-lg leading-8 text-gray-300">
+              Easily organize tenant documents, automate invoices, and resolve maintenance—all in one
+              secure dashboard. Stay on top of every detail with streamlined tools for property managers.
+            </p>
+
+            <div className="mt-8 flex flex-wrap gap-4 text-sm text-gray-200 sm:text-base">
+              <span className="rounded-full border border-white/10 bg-white/5 px-4 py-2">Tenant documents</span>
+              <span className="rounded-full border border-white/10 bg-white/5 px-4 py-2">Invoice management</span>
+              <span className="rounded-full border border-white/10 bg-white/5 px-4 py-2">Maintenance tracking</span>
+            </div>
+
+            <div className="mt-10 flex flex-wrap gap-4">
+              <button className="rounded-2xl bg-blue-600 px-7 py-3.5 text-base font-medium text-white shadow-lg hover:bg-blue-700 transition">
+                Start now
+              </button>
+              <button className="rounded-2xl border border-white/30 px-7 py-3.5 text-base font-medium text-white hover:bg-white hover:text-black transition">
+                See features
+              </button>
+            </div>
+          </div>
+
+          <div className="flex justify-center lg:justify-end">
+            <img
+              src="[images.unsplash.com](https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=1200&q=80)"
+              alt="Interior apartament"
+              className="h-[320px] w-full max-w-xl rounded-[32px] object-cover shadow-2xl sm:h-[420px] lg:h-[520px]"
+            />
+          </div>
+        </div>
+      </section>
+
+      <section className="bg-[#f7f7f5] text-[#202020]">
+        <div className="mx-auto max-w-7xl px-6 py-20 md:px-8">
+          <div className="mx-auto max-w-4xl text-center">
+            <h2 className="text-4xl font-light leading-tight sm:text-5xl lg:text-7xl">
+              Effortless rental management tools
+            </h2>
+            <p className="mt-6 text-lg leading-8 text-gray-600 sm:text-xl">
+              All-in-one platform for documents, payments, and maintenance.
+            </p>
+          </div>
+
+          <div className="mt-16 grid gap-6 md:grid-cols-2">
+            {features.map((item, index) => (
+              <div
+                key={index}
+                className="rounded-[28px] border border-gray-200 bg-white p-8 shadow-[0_10px_35px_rgba(0,0,0,0.08)] sm:p-10"
+              >
+                <div className="text-3xl">{item.icon}</div>
+                <h3 className="mt-6 text-2xl font-semibold">{item.titlu}</h3>
+                <p className="mt-4 text-lg leading-8 text-gray-600">{item.text}</p>
               </div>
             ))}
-
-            <Link to="/adauga-chirias" className="block text-center mt-4 bg-[#1abc9c] hover:bg-[#16a085] py-2 rounded transition">
-              + Adaugă Chiriaș
-            </Link>
           </div>
-
-          {/* Sectiunea Facturi */}
-          <div className="bg-[#242424] p-4 rounded-lg border-t-4 border-[#1abc9c]">
-            <h2 className="text-lg font-semibold mb-4">Gestiune Facturi</h2>
-            <div className="bg-[#1c1c1c] p-3 rounded border border-gray-700 mb-2">
-              <p>Total: 0 RON</p>
-            </div>
-            <Link to="/adauga-factura" className="block text-center mt-4 bg-[#1abc9c] hover:bg-[#16a085] py-2 rounded transition">
-              + Adaugă Factură
-            </Link>
-          </div>
-
-          {/* Sectiunea Mentenanță */}
-          <div className="bg-[#242424] p-4 rounded-lg border-t-4 border-[#1abc9c]">
-            <h2 className="text-lg font-semibold mb-4">Mentenanță</h2>
-            <div className="bg-[#1c1c1c] p-3 rounded border border-gray-700 mb-2">
-              <p>Fără probleme raportate</p>
-            </div>
-            <Link to="/raporteaza-problema" className="block text-center mt-4 bg-[#1abc9c] hover:bg-[#16a085] py-2 rounded transition">
-              + Raportează Problemă
-            </Link>
-          </div>
-
         </div>
-      </main>
+      </section>
+
+      <section className="bg-[#1f1f1f] text-white">
+        <div className="mx-auto max-w-7xl px-6 py-24 text-center md:px-8">
+          <p className="text-sm uppercase tracking-[0.3em] text-gray-400">Reliability</p>
+          <div className="mt-8 text-6xl font-light sm:text-7xl md:text-8xl lg:text-9xl">99.9%</div>
+          <p className="mt-6 text-xl text-gray-300 sm:text-2xl">System uptime</p>
+        </div>
+      </section>
+
+      <section className="bg-[#f7f7f5] text-[#202020]">
+        <div className="mx-auto max-w-7xl px-6 py-20 md:px-8">
+          <p className="text-center text-sm uppercase tracking-[0.25em] text-gray-500">Plans & Pricing</p>
+
+          <h2 className="mx-auto mt-4 max-w-6xl text-center text-4xl font-light leading-tight sm:text-5xl lg:text-7xl">
+            Flexible plans for every business
+          </h2>
+
+          <p className="mx-auto mt-6 max-w-4xl text-center text-lg leading-8 text-gray-600 sm:text-xl">
+            Select a plan that matches your property management needs. All options include tools for
+            tenants, invoicing, and maintenance tracking.
+          </p>
+
+          <div className="mt-16 grid gap-6 md:grid-cols-2 xl:grid-cols-4">
+            {plans.map((plan, index) => (
+              <div
+                key={index}
+                className="flex h-full flex-col rounded-[28px] border border-gray-200 bg-white p-8 shadow-[0_10px_35px_rgba(0,0,0,0.08)]"
+              >
+                <p className="text-center text-sm font-semibold tracking-[0.2em] text-gray-500">{plan.nume}</p>
+
+                <h3 className="mt-6 text-center text-5xl font-light">{plan.pret}</h3>
+
+                <div className="mt-8 flex justify-center">
+                  <button className="rounded-2xl bg-blue-600 px-8 py-3.5 text-base font-medium text-white hover:bg-blue-700 transition">
+                    Try now
+                  </button>
+                </div>
+
+                <div className="my-8 border-t border-gray-200"></div>
+
+                <div className="space-y-4">
+                  {plan.beneficii.map((b, i) => (
+                    <div key={i} className="flex items-start gap-3 text-base text-gray-700">
+                      <span className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-blue-100 text-blue-600">
+                        ✓
+                      </span>
+                      <span>{b}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="bg-[#f7f7f5] text-[#202020]">
+        <div className="mx-auto max-w-7xl px-6 py-20 md:px-8">
+          <p className="text-center text-sm uppercase tracking-[0.25em] text-gray-500">
+            Managed apartment portfolio
+          </p>
+
+          <h2 className="mt-4 text-center text-4xl font-light leading-tight sm:text-5xl lg:text-7xl">
+            Explore our property gallery
+          </h2>
+
+          <div className="mt-14 grid gap-6 md:grid-cols-2 xl:grid-cols-4">
+            <img
+              src="[images.unsplash.com](https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=900&q=80)"
+              alt="Apartament modern"
+              className="h-72 w-full rounded-[28px] object-cover shadow-md"
+            />
+            <img
+              src="[images.unsplash.com](https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?auto=format&fit=crop&w=900&q=80)"
+              alt="Aplicatie mobila"
+              className="h-72 w-full rounded-[28px] object-cover shadow-md"
+            />
+            <img
+              src="[images.unsplash.com](https://images.unsplash.com/photo-1581578731548-c64695cc6952?auto=format&fit=crop&w=900&q=80)"
+              alt="Unelte mentenanta"
+              className="h-72 w-full rounded-[28px] object-cover shadow-md"
+            />
+            <img
+              src="[images.unsplash.com](https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=900&q=80)"
+              alt="Dashboard laptop"
+              className="h-72 w-full rounded-[28px] object-cover shadow-md"
+            />
+          </div>
+        </div>
+      </section>
+
+      <section className="bg-[#1f1f1f] text-white">
+        <div className="mx-auto max-w-7xl px-6 py-20 md:px-8">
+          <p className="text-center text-sm uppercase tracking-[0.25em] text-gray-400">What our clients say</p>
+
+          <h2 className="mt-4 text-center text-4xl font-light leading-tight sm:text-5xl lg:text-7xl">
+            Efficiency trusted by professionals
+          </h2>
+
+          <p className="mt-6 text-center text-lg text-gray-400 sm:text-xl">
+            Discover how teams simplify rental tasks
+          </p>
+
+          <div className="mt-16 grid gap-6 md:grid-cols-2">
+            {testimoniale.map((item, index) => (
+              <div key={index} className="rounded-[28px] bg-white p-8 text-[#202020] shadow-[0_10px_35px_rgba(0,0,0,0.12)] sm:p-10">
+                <p className="text-2xl leading-tight sm:text-3xl">"{item.mesaj}"</p>
+                <div className="mt-10">
+                  <p className="text-2xl font-semibold">{item.nume}</p>
+                  <p className="mt-2 text-lg text-gray-500">{item.rol}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <footer className="border-t border-white/10 bg-[#111827]">
+        <div className="mx-auto max-w-7xl px-6 py-16 md:px-8">
+          <div className="grid gap-12 md:grid-cols-3">
+            <div className="max-w-sm">
+              <div className="flex items-center gap-4">
+                <img
+                  src={logo}
+                  alt="New Concept Living logo"
+                  className="h-16 w-16 rounded-2xl object-cover shadow-lg"
+                />
+                <div>
+                  <h3 className="text-xl font-semibold text-white">New Concept Living</h3>
+                  <p className="mt-1 text-sm text-gray-400">Rental management platform</p>
+                </div>
+              </div>
+
+              <p className="mt-6 text-sm leading-7 text-gray-400">
+                A modern platform for apartment administration, tenant records, invoicing, and maintenance management.
+              </p>
+            </div>
+
+            <div>
+              <h4 className="text-sm font-semibold uppercase tracking-[0.25em] text-gray-500">Pages</h4>
+              <ul className="mt-6 space-y-4 text-sm text-gray-300">
+                <li><Link to="/" className="hover:text-white transition">Home</Link></li>
+                <li><Link to="/contact" className="hover:text-white transition">Contact</Link></li>
+                <li><Link to="/facturi" className="hover:text-white transition">Invoice Management</Link></li>
+                <li><Link to="/mentenanta" className="hover:text-white transition">Maintenance Requests</Link></li>
+                <li><Link to="/documente" className="hover:text-white transition">Tenant Documents</Link></li>
+              </ul>
+            </div>
+
+            <div>
+              <h4 className="text-sm font-semibold uppercase tracking-[0.25em] text-gray-500">Stay updated</h4>
+              <p className="mt-6 text-sm leading-7 text-gray-400">
+                Subscribe for product updates and rental management insights.
+              </p>
+
+              <div className="mt-6 flex flex-col gap-3 sm:flex-row">
+                <input
+                  type="email"
+                  placeholder="Enter your email"
+                  className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white placeholder:text-gray-500 outline-none"
+                />
+                <button className="rounded-xl bg-blue-600 px-5 py-3 text-sm font-medium text-white hover:bg-blue-700 transition">
+                  Submit
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div className="mt-12 border-t border-white/10 pt-6 text-center text-sm text-gray-500">
+            © 2026 New Concept Living. All rights reserved.
+          </div>
+        </div>
+      </footer>
     </div>
   );
 }
