@@ -1,20 +1,28 @@
 const express = require('express');
 const cors = require('cors');
 const app = express();
-const PORT = 5001;
+const PORT = 5001; 
 
-// Permitem comunicarea cu interfața (frontend-ul)
 app.use(cors());
-// Permitem serverului să înțeleagă date de tip JSON
 app.use(express.json());
 
-// O rută simplă de test
+// Mesajul de salut
 app.get('/api/test', (req, res) => {
-  console.log("Cineva a dat refresh la pagină!"); 
-  res.json({ mesaj: "Salut! Serverul funcționează perfect!" });
+  res.json({ mesaj: 'Salut! Serverul funcționează perfect!' });
 });
 
-// Pornim serverul
+// Aici este lista pe care o caută site-ul și nu o găsea!
+const chiriasi = [
+  { id: 1, nume: "Ana Popescu", ap: "12", status: "Activ" },
+  { id: 2, nume: "Marius Ionescu", ap: "05", status: "Restanță" },
+  { id: 3, nume: "Elena Radu", ap: "21", status: "Activ" }
+];
+
+// Ruta la care bate site-ul
+app.get('/api/chiriasi', (req, res) => {
+  res.json(chiriasi);
+});
+
 app.listen(PORT, () => {
-  console.log(`Serverul a pornit cu succes la: http://localhost:${PORT}`);
+  console.log(`Serverul rulează pe portul ${PORT}`);
 });

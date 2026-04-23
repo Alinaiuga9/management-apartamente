@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
 
-function Dashboard({ chiriasi }) {
+function Dashboard({ chiriasi = [] }) {
   const [meniuDeschis, setMeniuDeschis] = useState(false);
 
   return (
@@ -29,7 +29,6 @@ function Dashboard({ chiriasi }) {
           </div>
         </div>
 
-        {/* Butonul de Contact care duce la noua pagină */}
         <Link to="/contact">
           <button className="bg-[#1abc9c] hover:bg-[#16a085] text-white px-4 py-2 rounded font-medium transition">
             Contactează-ne
@@ -55,32 +54,41 @@ function Dashboard({ chiriasi }) {
           
           {/* Sectiunea Chiriași */}
           <div className="bg-[#242424] p-4 rounded-lg border-t-4 border-[#1abc9c]">
-            <h2 className="text-lg font-semibold mb-4">a. Chiriași - acte</h2>
+            <h2 className="text-lg font-semibold mb-4">Chiriași - acte</h2>
+            
+            {/* Lista automată cu designul nou */}
             {chiriasi.map((c) => (
               <div key={c.id} className="bg-[#1c1c1c] p-3 rounded border border-gray-700 mb-2">
-                <p>{c.nume} - Ap. {c.ap}</p>
+                <p className="font-bold">{c.nume} - Ap. {c.ap}</p>
                 <p className="text-sm">Status: {c.status}</p>
               </div>
             ))}
-            <Link to="/adauga-chirias" className="block text-center mt-4 bg-[#1abc9c] py-2 rounded">+ Adaugă Chiriaș</Link>
+
+            <Link to="/adauga-chirias" className="block text-center mt-4 bg-[#1abc9c] hover:bg-[#16a085] py-2 rounded transition">
+              + Adaugă Chiriaș
+            </Link>
           </div>
 
           {/* Sectiunea Facturi */}
           <div className="bg-[#242424] p-4 rounded-lg border-t-4 border-[#1abc9c]">
-            <h2 className="text-lg font-semibold mb-4">b. Gestiune Facturi</h2>
+            <h2 className="text-lg font-semibold mb-4">Gestiune Facturi</h2>
             <div className="bg-[#1c1c1c] p-3 rounded border border-gray-700 mb-2">
               <p>Total: 0 RON</p>
             </div>
-            <Link to="/adauga-factura" className="block text-center mt-4 bg-[#1abc9c] py-2 rounded">+ Adaugă Factură</Link>
+            <Link to="/adauga-factura" className="block text-center mt-4 bg-[#1abc9c] hover:bg-[#16a085] py-2 rounded transition">
+              + Adaugă Factură
+            </Link>
           </div>
 
           {/* Sectiunea Mentenanță */}
           <div className="bg-[#242424] p-4 rounded-lg border-t-4 border-[#1abc9c]">
-            <h2 className="text-lg font-semibold mb-4">c. Mentenanță</h2>
+            <h2 className="text-lg font-semibold mb-4">Mentenanță</h2>
             <div className="bg-[#1c1c1c] p-3 rounded border border-gray-700 mb-2">
               <p>Fără probleme raportate</p>
             </div>
-            <Link to="/raporteaza-problema" className="block text-center mt-4 bg-[#1abc9c] py-2 rounded">+ Raportează Problemă</Link>
+            <Link to="/raporteaza-problema" className="block text-center mt-4 bg-[#1abc9c] hover:bg-[#16a085] py-2 rounded transition">
+              + Raportează Problemă
+            </Link>
           </div>
 
         </div>
