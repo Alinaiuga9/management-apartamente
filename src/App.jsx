@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Dashboard from './Dashboard';
+import Contact from './Contact';
 
 function PlaceholderPage({ title }) {
   return (
@@ -17,7 +18,7 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Dashboard />} />
-        <Route path="/contact" element={<PlaceholderPage title="Contact" />} />
+        <Route path="/contact" element={<Contact />} />
         <Route path="/facturi" element={<PlaceholderPage title="Invoice Management" />} />
         <Route path="/mentenanta" element={<PlaceholderPage title="Maintenance Requests" />} />
         <Route path="/documente" element={<PlaceholderPage title="Tenant Documents" />} />

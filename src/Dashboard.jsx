@@ -78,40 +78,46 @@ function Dashboard() {
     <div className="min-h-screen bg-[#1f1f1f] text-white">
       <nav className="sticky top-0 z-50 border-b border-white/10 bg-[#1f1f1f]/95 backdrop-blur">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-3">
+            <button
+              className="flex h-10 w-10 items-center justify-center rounded-xl border border-white/15 bg-white/5 hover:bg-white/10 transition"
+            >
+              <img
+                src={logo}
+                alt="Logo"
+                className="h-5 w-5 object-contain"
+              />
+            </button>
+
             <button
               onClick={() => setMeniuDeschis(!meniuDeschis)}
-              className="flex h-11 w-11 items-center justify-center rounded-xl border border-white/15 bg-white/5 hover:bg-white/10 transition"
+              className="flex h-10 w-10 items-center justify-center rounded-xl border border-white/15 bg-white/5 hover:bg-white/10 transition"
             >
-              <div className="flex flex-col gap-1.5">
-                <span className="block h-[2px] w-5 rounded-full bg-white"></span>
-                <span className="block h-[2px] w-5 rounded-full bg-white"></span>
-                <span className="block h-[2px] w-5 rounded-full bg-white"></span>
+              <div className="flex flex-col gap-1">
+                <span className="block h-[2px] w-4 rounded-full bg-white"></span>
+                <span className="block h-[2px] w-4 rounded-full bg-white"></span>
+                <span className="block h-[2px] w-4 rounded-full bg-white"></span>
               </div>
             </button>
 
-            <div className="flex items-center gap-3">
-              <img
-                src={logo}
-                alt="New Concept Living logo"
-                className="h-12 w-12 rounded-xl object-cover"
-              />
-              <div>
-                <p className="text-base font-semibold leading-5 text-white">New Concept</p>
-                <p className="text-sm text-gray-400">Living</p>
-              </div>
+            <div>
+              <p className="text-sm font-semibold leading-4 text-white">New Concept</p>
+              <p className="text-xs text-gray-400">Living</p>
             </div>
           </div>
 
-          <button className="rounded-xl bg-blue-600 px-5 py-2.5 text-sm font-medium text-white shadow-md hover:bg-blue-700 transition">
+          <Link
+            to="/contact"
+            className="rounded-xl bg-blue-600 px-5 py-2.5 text-sm font-medium text-white shadow-md hover:bg-blue-700 transition"
+          >
             Contactează-ne
-          </button>
+          </Link>
         </div>
 
         {meniuDeschis && (
           <div className="border-t border-white/10 bg-[#232323]">
             <div className="mx-auto grid max-w-7xl gap-3 px-6 py-4 md:grid-cols-5">
-              <Link to="/" className="rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm font-medium hover:bg-white/10 transition">
+              <Link to="/" className="rounded-xl border border-white/10 bg-white/10 px-4 py-3 text-sm font-medium">
                 Home
               </Link>
               <Link to="/contact" className="rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm font-medium hover:bg-white/10 transition">
@@ -148,9 +154,9 @@ function Dashboard() {
             </p>
 
             <div className="mt-8 flex flex-wrap gap-4 text-sm text-gray-200 sm:text-base">
-              <span className="rounded-full border border-white/10 bg-white/5 px-4 py-2">Tenant documents</span>
-              <span className="rounded-full border border-white/10 bg-white/5 px-4 py-2">Invoice management</span>
-              <span className="rounded-full border border-white/10 bg-white/5 px-4 py-2">Maintenance tracking</span>
+              <span className="rounded-full border border-white/10 bg-white/5 px-4 py-2">✦ Tenant documents</span>
+              <span className="rounded-full border border-white/10 bg-white/5 px-4 py-2">↺ Invoice management</span>
+              <span className="rounded-full border border-white/10 bg-white/5 px-4 py-2">♡ Maintenance tracking</span>
             </div>
 
             <div className="mt-10 flex flex-wrap gap-4">
@@ -315,59 +321,45 @@ function Dashboard() {
         </div>
       </section>
 
-      <footer className="border-t border-white/10 bg-[#111827]">
-        <div className="mx-auto max-w-7xl px-6 py-16 md:px-8">
-          <div className="grid gap-12 md:grid-cols-3">
-            <div className="max-w-sm">
-              <div className="flex items-center gap-4">
-                <img
-                  src={logo}
-                  alt="New Concept Living logo"
-                  className="h-16 w-16 rounded-2xl object-cover shadow-lg"
-                />
-                <div>
-                  <h3 className="text-xl font-semibold text-white">New Concept Living</h3>
-                  <p className="mt-1 text-sm text-gray-400">Rental management platform</p>
-                </div>
-              </div>
-
-              <p className="mt-6 text-sm leading-7 text-gray-400">
-                A modern platform for apartment administration, tenant records, invoicing, and maintenance management.
-              </p>
-            </div>
-
-            <div>
-              <h4 className="text-sm font-semibold uppercase tracking-[0.25em] text-gray-500">Pages</h4>
-              <ul className="mt-6 space-y-4 text-sm text-gray-300">
-                <li><Link to="/" className="hover:text-white transition">Home</Link></li>
-                <li><Link to="/contact" className="hover:text-white transition">Contact</Link></li>
-                <li><Link to="/facturi" className="hover:text-white transition">Invoice Management</Link></li>
-                <li><Link to="/mentenanta" className="hover:text-white transition">Maintenance Requests</Link></li>
-                <li><Link to="/documente" className="hover:text-white transition">Tenant Documents</Link></li>
-              </ul>
-            </div>
-
-            <div>
-              <h4 className="text-sm font-semibold uppercase tracking-[0.25em] text-gray-500">Stay updated</h4>
-              <p className="mt-6 text-sm leading-7 text-gray-400">
-                Subscribe for product updates and rental management insights.
-              </p>
-
-              <div className="mt-6 flex flex-col gap-3 sm:flex-row">
-                <input
-                  type="email"
-                  placeholder="Enter your email"
-                  className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white placeholder:text-gray-500 outline-none"
-                />
-                <button className="rounded-xl bg-blue-600 px-5 py-3 text-sm font-medium text-white hover:bg-blue-700 transition">
-                  Submit
-                </button>
+      <footer className="border-t border-white/10 bg-[#1f1f1f]">
+        <div className="mx-auto grid max-w-7xl gap-10 px-6 py-12 md:grid-cols-3 md:px-8">
+          <div>
+            <div className="flex items-center gap-3">
+              <img
+                src={logo}
+                alt="New Concept Living Logo"
+                className="h-6 w-6 object-contain"
+              />
+              <div>
+                <p className="text-xl font-semibold">New Concept Living</p>
+                <p className="text-sm text-gray-400">Rental management platform</p>
               </div>
             </div>
           </div>
 
-          <div className="mt-12 border-t border-white/10 pt-6 text-center text-sm text-gray-500">
-            © 2026 New Concept Living. All rights reserved.
+          <div>
+            <p className="mb-4 text-sm uppercase tracking-[0.25em] text-gray-500">Pages</p>
+            <div className="space-y-3 text-gray-300">
+              <p>Home</p>
+              <p>Contact</p>
+              <p>Invoice Management</p>
+              <p>Maintenance Requests</p>
+              <p>Tenant Documents</p>
+            </div>
+          </div>
+
+          <div>
+            <p className="mb-4 text-sm uppercase tracking-[0.25em] text-gray-500">Subscribe</p>
+            <div className="flex flex-col gap-3 sm:flex-row">
+              <input
+                type="email"
+                placeholder="Enter your email"
+                className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-white placeholder:text-gray-500 outline-none"
+              />
+              <button className="rounded-xl bg-blue-600 px-5 py-3 text-white hover:bg-blue-700 transition">
+                Submit
+              </button>
+            </div>
           </div>
         </div>
       </footer>
