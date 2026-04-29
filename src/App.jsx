@@ -1,30 +1,56 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { useState, useEffect } from 'react'; 
 import Dashboard from './Dashboard';
-import Contact from './Contact';
+import AdaugaChirias from './AdaugaChirias';
+import AdaugaFactura from './AdaugaFactura';
+import RaporteazaProblema from './RaporteazaProblema';
 
-function PlaceholderPage({ title }) {
+function App() {
+  const [mesajServer, setMesajServer] = useState('Se încarcă...');
+  const [chiriasi, setChiriasi] = useState([]);
+
+  useEffect(() => {
+    // 1. Verificăm conexiunea de test
+    fetch('http://localhost:5001/api/test')
+      .then(response => response.json())
+      .then(data => setMesajServer(data.mesaj))
+      .catch(error => setMesajServer("Nu mă pot conecta la server!"));
+
+    // 2. Cerem lista de chiriași
+    fetch('http://localhost:5001/api/chiriasi')
+      .then(response => response.json())
+      .then(data => {
+        console.log("Datele primite de la server:", data); // Mesaj de control
+        setChiriasi(data);
+      })
+      .catch(error => {
+        console.error("Eroare la aducerea chiriașilor:", error);
+      });
+  }, []);
+
+  const adaugaChirias = (nou) => {
+    setChiriasi([...chiriasi, { id: Date.now(), ...nou }]);
+  };
+
   return (
-    <div className="min-h-screen bg-[#1f1f1f] flex items-center justify-center text-white px-6">
-      <div className="text-center">
-        <h1 className="text-4xl md:text-6xl font-light">{title}</h1>
-        <p className="mt-4 text-gray-400">Pagina este în construcție.</p>
+    <div className="App">
+      {/* Bara de status */}
+      <div style={{ padding: '10px', backgroundColor: '#e0f7fa', textAlign: 'center', marginBottom: '20px', borderRadius: '8px' }}>
+         <strong>Status Server: </strong> <span style={{color: 'blue'}}>{mesajServer}</span>
       </div>
+
+      <BrowserRouter>
+        <Routes>
+          {/* Trimitem lista 'chiriasi' către pagina Dashboard */}
+          <Route path="/" element={<Dashboard chiriasi={chiriasi} />} />
+          
+          <Route path="/adauga-chirias" element={<AdaugaChirias adaugaChirias={adaugaChirias} />} />
+          <Route path="/adauga-factura" element={<AdaugaFactura />} />
+          <Route path="/raporteaza-problema" element={<RaporteazaProblema />} />
+        </Routes>
+      </BrowserRouter>
     </div>
   );
 }
 
-function App() {
-  return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Dashboard />} />
-        <Route path="/contact" element={<Contact />} />
-        <Route path="/facturi" element={<PlaceholderPage title="Invoice Management" />} />
-        <Route path="/mentenanta" element={<PlaceholderPage title="Maintenance Requests" />} />
-        <Route path="/documente" element={<PlaceholderPage title="Tenant Documents" />} />
-      </Routes>
-    </BrowserRouter>
-  );
-}
-
-export default App;
+export default App; 
