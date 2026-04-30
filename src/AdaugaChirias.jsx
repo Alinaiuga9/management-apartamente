@@ -1,24 +1,37 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
-function AdaugaChirias({ adaugaChirias }) {
+function AdaugaChirias() {
   const [nume, setNume] = useState('');
   const [ap, setAp] = useState('');
+  const [email, setEmail] = useState('');
+  const [telefon, setTelefon] = useState('');
+  const [eroare, setEroare] = useState('');
   const navigate = useNavigate();
 
-  const handleSave = () => {
+  const handleSave = async () => {
     if (!nume || !ap) {
-      alert('Te rugăm să completezi toate câmpurile!');
+      setEroare('Te rugăm să completezi numele și numărul apartamentului!');
       return;
     }
 
-    adaugaChirias({
-      nume,
-      ap,
-      status: 'Activ',
-    });
+    try {
+      const response = await fetch('[localhost](http://localhost:5001/api/chiriasi)', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ nume, email, telefon, apartament_id: ap }),
+      });
 
-    navigate('/');
+      const result = await response.json();
+
+      if (result.success) {
+        navigate('/');
+      } else {
+        setEroare('Eroare la salvare. Încearcă din nou.');
+      }
+    } catch (err) {
+      setEroare('Nu mă pot conecta la server. Verifică că rulează pe portul 5001.');
+    }
   };
 
   return (
@@ -26,22 +39,52 @@ function AdaugaChirias({ adaugaChirias }) {
       <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-lg border-t-4 border-blue-500">
         <h2 className="text-2xl font-bold mb-6 text-gray-800">Adaugă un chiriaș nou</h2>
 
+        {eroare && (
+          <div className="mb-4 p-3 bg-red-100 text-red-700 rounded">
+            {eroare}
+          </div>
+        )}
+
         <div className="mb-4">
-          <label className="block text-gray-700 font-medium mb-2">Nume complet</label>
+          <label className="block text-gray-700 font-medium mb-2">Nume complet *</label>
           <input
             value={nume}
             onChange={(e) => setNume(e.target.value)}
             type="text"
+            placeholder="ex: Ion Popescu"
+            className="w-full border p-2 rounded focus:ring-2 focus:ring-blue-500"
+          />
+        </div>
+
+        <div className="mb-4">
+          <label className="block text-gray-700 font-medium mb-2">Număr apartament *</label>
+          <input
+            value={ap}
+            onChange={(e) => setAp(e.target.value)}
+            type="text"
+            placeholder="ex: 12"
+            className="w-full border p-2 rounded focus:ring-2 focus:ring-blue-500"
+          />
+        </div>
+
+        <div className="mb-4">
+          <label className="block text-gray-700 font-medium mb-2">Email</label>
+          <input
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            type="email"
+            placeholder="ex: ion@email.com"
             className="w-full border p-2 rounded focus:ring-2 focus:ring-blue-500"
           />
         </div>
 
         <div className="mb-6">
-          <label className="block text-gray-700 font-medium mb-2">Număr apartament</label>
+          <label className="block text-gray-700 font-medium mb-2">Telefon</label>
           <input
-            value={ap}
-            onChange={(e) => setAp(e.target.value)}
-            type="text"
+            value={telefon}
+            onChange={(e) => setTelefon(e.target.value)}
+            type="tel"
+            placeholder="ex: 0722123456"
             className="w-full border p-2 rounded focus:ring-2 focus:ring-blue-500"
           />
         </div>
