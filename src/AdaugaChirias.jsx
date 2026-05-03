@@ -16,21 +16,30 @@ function AdaugaChirias() {
     }
 
     try {
-      const response = await fetch('[localhost](http://localhost:5001/api/chiriasi)', {
+      // Am eliminat parantezele de markdown, lăsând doar linkul curat
+      const response = await fetch('http://localhost:5001/api/chiriasi', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ nume, email, telefon, apartament_id: ap }),
+        // Am asigurat potrivirea datelor cu noua ta bază de date SQLite
+        body: JSON.stringify({ 
+          nume: nume, 
+          email: email, 
+          telefon: telefon, 
+          apartament_numar: ap 
+        }),
       });
 
       const result = await response.json();
 
       if (result.success) {
+        // Dacă serverul zice "success: true", ne întoarcem la pagina principală
         navigate('/');
       } else {
-        setEroare('Eroare la salvare. Încearcă din nou.');
+        setEroare('Eroare la salvare: ' + (result.error || 'Încearcă din nou.'));
       }
     } catch (err) {
-      setEroare('Nu mă pot conecta la server. Verifică că rulează pe portul 5001.');
+      setEroare('Eroare conexiune: Nu se poate contacta serverul.');
+      console.error(err);
     }
   };
 

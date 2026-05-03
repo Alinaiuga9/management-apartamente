@@ -12,11 +12,14 @@ const db = new Database('management.db');
 app.use(cors());
 app.use(express.json());
 
-// Folder pentru fișiere uploadate
+
+app.get('/api/test', (req, res) => {
+    res.json({ mesaj: "Conexiune excelentă! Serverul este online." });
+  });
+
 if (!fs.existsSync('./uploads')) fs.mkdirSync('./uploads');
 app.use('/uploads', express.static('uploads'));
 
-// Config multer pentru upload
 const storage = multer.diskStorage({
   destination: (req, file, cb) => cb(null, './uploads'),
   filename: (req, file, cb) => {
@@ -26,9 +29,6 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage });
 
-// ───────────────────────────────────────────
-// CREARE TABELE
-// ───────────────────────────────────────────
 db.exec(`
   CREATE TABLE IF NOT EXISTS apartamente (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -43,9 +43,8 @@ db.exec(`
     nume TEXT NOT NULL,
     email TEXT,
     telefon TEXT,
-    parola TEXT,
     apartament_id INTEGER,
-    FOREIGN KEY (apartament_id) REFERENCES apartamente(id)
+    apartament_numar TEXT
   );
 
   CREATE TABLE IF NOT EXISTS facturi (
@@ -55,8 +54,7 @@ db.exec(`
     tip TEXT NOT NULL,
     data_emiterii TEXT NOT NULL,
     data_scadentei TEXT NOT NULL,
-    status TEXT DEFAULT 'Neplătită',
-    FOREIGN KEY (chirias_id) REFERENCES chiriasi(id)
+    status TEXT DEFAULT 'Neplătită'
   );
 
   CREATE TABLE IF NOT EXISTS mentenanta (
@@ -67,9 +65,7 @@ db.exec(`
     apartament_id INTEGER,
     poza TEXT,
     status TEXT DEFAULT 'Nouă',
-    data_raportarii TEXT DEFAULT (datetime('now')),
-    FOREIGN KEY (chirias_id) REFERENCES chiriasi(id),
-    FOREIGN KEY (apartament_id) REFERENCES apartamente(id)
+    data_raportarii TEXT DEFAULT (datetime('now'))
   );
 
   CREATE TABLE IF NOT EXISTS documente (
@@ -78,8 +74,7 @@ db.exec(`
     tip TEXT NOT NULL,
     cale TEXT NOT NULL,
     chirias_id INTEGER,
-    data_upload TEXT DEFAULT (datetime('now')),
-    FOREIGN KEY (chirias_id) REFERENCES chiriasi(id)
+    data_upload TEXT DEFAULT (datetime('now'))
   );
 
   CREATE TABLE IF NOT EXISTS mesaje_contact (
@@ -92,9 +87,38 @@ db.exec(`
   );
 `);
 
-// ───────────────────────────────────────────
-// RUTE APARTAMENTE
-// ───────────────────────────────────────────
+// CHIRIASI
+app.get('/api/chiriasi', (req, res) => {
+  try {
+    const chiriasi = db.prepare('SELECT * FROM chiriasi').all();
+    res.json(chiriasi);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.post('/api/chiriasi', (req, res) => {
+    try {
+      // Acum serverul caută EXACT cuvântul "apartament_numar" pe care îl trimite formularul
+      const { nume, email, telefon, apartament_numar } = req.body;
+  
+      const r = db.prepare(
+        'INSERT INTO chiriasi (nume, email, telefon, apartament_numar) VALUES (?, ?, ?, ?)'
+      ).run(nume || '', email || '', telefon || '', apartament_numar || '');
+      
+      res.json({ success: true, id: r.lastInsertRowid });
+    } catch (err) {
+      console.error("Eroare la salvare:", err);
+      res.status(500).json({ error: err.message });
+    }
+  });
+
+app.delete('/api/chiriasi/:id', (req, res) => {
+  db.prepare('DELETE FROM chiriasi WHERE id = ?').run(req.params.id);
+  res.json({ success: true });
+});
+
+// APARTAMENTE
 app.get('/api/apartamente', (req, res) => {
   res.json(db.prepare('SELECT * FROM apartamente').all());
 });
@@ -112,41 +136,9 @@ app.delete('/api/apartamente/:id', (req, res) => {
   res.json({ success: true });
 });
 
-// ───────────────────────────────────────────
-// RUTE CHIRIAȘI
-// ───────────────────────────────────────────
-app.get('/api/chiriasi', (req, res) => {
-  const chiriasi = db.prepare(`
-    SELECT c.*, a.numar as apartament
-    FROM chiriasi c
-    LEFT JOIN apartamente a ON c.apartament_id = a.id
-  `).all();
-  res.json(chiriasi);
-});
-
-app.post('/api/chiriasi', (req, res) => {
-  const { nume, email, telefon, apartament_id } = req.body;
-  const r = db.prepare(
-    'INSERT INTO chiriasi (nume, email, telefon, apartament_id) VALUES (?, ?, ?, ?)'
-  ).run(nume, email, telefon, apartament_id);
-  res.json({ success: true, id: r.lastInsertRowid });
-});
-
-app.delete('/api/chiriasi/:id', (req, res) => {
-  db.prepare('DELETE FROM chiriasi WHERE id = ?').run(req.params.id);
-  res.json({ success: true });
-});
-
-// ───────────────────────────────────────────
-// RUTE FACTURI
-// ───────────────────────────────────────────
+// FACTURI
 app.get('/api/facturi', (req, res) => {
-  const facturi = db.prepare(`
-    SELECT f.*, c.nume as chirias_nume
-    FROM facturi f
-    LEFT JOIN chiriasi c ON f.chirias_id = c.id
-  `).all();
-  res.json(facturi);
+  res.json(db.prepare('SELECT * FROM facturi').all());
 });
 
 app.post('/api/facturi', (req, res) => {
@@ -158,8 +150,7 @@ app.post('/api/facturi', (req, res) => {
 });
 
 app.patch('/api/facturi/:id/status', (req, res) => {
-  const { status } = req.body;
-  db.prepare('UPDATE facturi SET status = ? WHERE id = ?').run(status, req.params.id);
+  db.prepare('UPDATE facturi SET status = ? WHERE id = ?').run(req.body.status, req.params.id);
   res.json({ success: true });
 });
 
@@ -168,9 +159,7 @@ app.delete('/api/facturi/:id', (req, res) => {
   res.json({ success: true });
 });
 
-// ───────────────────────────────────────────
-// RUTE MENTENANȚĂ
-// ───────────────────────────────────────────
+// MENTENANTA
 app.get('/api/mentenanta', (req, res) => {
   res.json(db.prepare('SELECT * FROM mentenanta').all());
 });
@@ -185,14 +174,11 @@ app.post('/api/mentenanta', upload.single('poza'), (req, res) => {
 });
 
 app.patch('/api/mentenanta/:id/status', (req, res) => {
-  const { status } = req.body;
-  db.prepare('UPDATE mentenanta SET status = ? WHERE id = ?').run(status, req.params.id);
+  db.prepare('UPDATE mentenanta SET status = ? WHERE id = ?').run(req.body.status, req.params.id);
   res.json({ success: true });
 });
 
-// ───────────────────────────────────────────
-// RUTE DOCUMENTE
-// ───────────────────────────────────────────
+// DOCUMENTE
 app.get('/api/documente', (req, res) => {
   res.json(db.prepare('SELECT * FROM documente').all());
 });
@@ -216,9 +202,7 @@ app.delete('/api/documente/:id', (req, res) => {
   res.json({ success: true });
 });
 
-// ───────────────────────────────────────────
-// RUTE CONTACT
-// ───────────────────────────────────────────
+// CONTACT
 app.get('/api/contact', (req, res) => {
   res.json(db.prepare('SELECT * FROM mesaje_contact ORDER BY id DESC').all());
 });
@@ -234,7 +218,6 @@ app.post('/api/contact', (req, res) => {
   res.json({ success: true, id: r.lastInsertRowid });
 });
 
-// ───────────────────────────────────────────
 app.listen(PORT, () => {
   console.log(`Server pornit pe http://localhost:${PORT}`);
 });
