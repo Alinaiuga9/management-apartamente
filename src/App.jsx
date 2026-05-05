@@ -3,6 +3,9 @@ import { useState, useEffect } from 'react';
 import Dashboard from './Dashboard';
 import AdaugaChirias from './AdaugaChirias';
 import AdaugaFactura from './AdaugaFactura';
+import GestionareFacturi from './GestionareFacturi';
+import GestionareMentenanta from './GestionareMentenanta';
+import GestionareDocumente from './GestionareDocumente';
 import Contact from './Contact';
 import RaporteazaProblema from './RaporteazaProblema';
 
@@ -47,6 +50,9 @@ function App() {
           
           <Route path="/adauga-chirias" element={<AdaugaChirias adaugaChirias={adaugaChirias} />} />
           <Route path="/adauga-factura" element={<AdaugaFactura />} />
+          <Route path="/facturi" element={<GestionareFacturi />} />
+          <Route path="/mentenanta" element={<GestionareMentenanta />} />
+          <Route path="/documente" element={<GestionareDocumente />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/raporteaza-problema" element={<RaporteazaProblema />} />
         </Routes>

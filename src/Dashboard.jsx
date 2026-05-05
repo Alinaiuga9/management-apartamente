@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import logo from './assets/logo.png';
+import Navbar from './Navbar';
 
 function Dashboard() {
 const [meniuDeschis, setMeniuDeschis] = useState(false);
@@ -89,106 +90,58 @@ mesaj: 'We save valuable time every week.',
 ];
 
 return (
-<div className="min-h-screen bg-[#1f1f1f] text-white">
-{/* Navbar */}
-<nav className="sticky top-0 z-50 border-b border-white/10 bg-[#1f1f1f]/95 backdrop-blur">
-<div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
-<div className="flex items-center gap-3">
-<button className="flex h-10 w-10 items-center justify-center rounded-xl border border-white/15 bg-white/5 hover:bg-white/10 transition">
-<img src={logo} alt="Logo" className="h-5 w-5 object-contain" />
-</button>
-
-<button
-onClick={() => setMeniuDeschis(!meniuDeschis)}
-className="flex h-10 w-10 items-center justify-center rounded-xl border border-white/15 bg-white/5 hover:bg-white/10 transition"
->
-<div className="flex flex-col gap-1">
-<span className="block h-[2px] w-4 rounded-full bg-white"></span>
-<span className="block h-[2px] w-4 rounded-full bg-white"></span>
-<span className="block h-[2px] w-4 rounded-full bg-white"></span>
-</div>
-</button>
-
-<div>
-<p className="text-sm font-semibold leading-4 text-white">New Concept</p>
-<p className="text-xs text-gray-400">Living</p>
-</div>
-</div>
-
-<Link
-to="/contact"
-className="rounded-xl bg-blue-600 px-5 py-2.5 text-sm font-medium text-white shadow-md hover:bg-blue-700 transition"
->
-Contactează-ne
-</Link>
-</div>
-
-{meniuDeschis && (
-<div className="border-t border-white/10 bg-[#232323]">
-<div className="mx-auto grid max-w-7xl gap-3 px-6 py-4 md:grid-cols-5">
-<Link to="/" className="rounded-xl border border-white/10 bg-white/10 px-4 py-3 text-sm font-medium">
-Home
-</Link>
-<Link to="/contact" className="rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm font-medium hover:bg-white/10 transition">
-Contact
-</Link>
-<Link to="/facturi" className="rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm font-medium hover:bg-white/10 transition">
-Invoice Management
-</Link>
-<Link to="/mentenanta" className="rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm font-medium hover:bg-white/10 transition">
-Maintenance Requests
-</Link>
-<Link to="/documente" className="rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm font-medium hover:bg-white/10 transition">
-Tenant Documents
-</Link>
-</div>
-</div>
-)}
-</nav>
+<div className="min-h-screen bg-slate-50 text-slate-900">
+<Navbar />
 
 {/* Hero Section */}
-<section className="bg-[#1f1f1f]">
-<div className="mx-auto grid max-w-7xl items-center gap-14 px-6 py-16 md:px-8 lg:grid-cols-2 lg:py-24">
+<section className="bg-slate-50">
+<div className="mx-auto grid max-w-7xl items-center gap-14 px-6 py-20 md:px-8 lg:grid-cols-2 lg:py-24">
 <div className="max-w-2xl">
-<p className="mb-4 text-sm uppercase tracking-[0.25em] text-gray-400">Smart rental platform</p>
-<h1 className="text-5xl font-light leading-[0.95] tracking-tight text-white sm:text-6xl lg:text-7xl">
-Effortless rental management, simplified
+<p className="mb-4 text-sm uppercase tracking-[0.28em] text-indigo-600">Platformă pentru proprietari</p>
+<h1 className="text-5xl font-semibold tracking-tight text-slate-900 sm:text-6xl">
+Gestionează proprietățile și chiriașii cu claritate
 </h1>
-<p className="mt-8 max-w-xl text-lg leading-8 text-gray-300">
-Organize tenant documents, automate invoices, resolve maintenance—all in one secure dashboard.
+<p className="mt-6 max-w-xl text-lg leading-8 text-slate-600">
+Un dashboard profesional pentru facturi, documente și cereri de întreținere. Totul într-o experiență intuitivă, rapidă și modernă.
 </p>
 
 <div className="mt-10 flex flex-wrap gap-4">
 <Link
 to="/adauga-chirias"
-className="rounded-2xl bg-blue-600 px-7 py-3.5 text-base font-medium text-white shadow-lg hover:bg-blue-700 transition"
+className="inline-flex items-center justify-center rounded-2xl bg-indigo-600 px-7 py-3.5 text-base font-semibold text-white shadow-lg shadow-indigo-500/20 transition hover:bg-indigo-700"
 >
 Adaugă chiriaș
 </Link>
-<button className="rounded-2xl border border-white/30 px-7 py-3.5 text-base font-medium text-white hover:bg-white hover:text-black transition">
-See features
-</button>
+<Link
+to="/facturi"
+className="inline-flex items-center justify-center rounded-2xl border border-slate-300 bg-white px-7 py-3.5 text-base font-semibold text-slate-700 transition hover:border-slate-400 hover:bg-slate-100"
+>
+Gestionare Facturi
+</Link>
 </div>
 </div>
-<div className="flex justify-center lg:justify-end">
+
+<div className="relative flex justify-center lg:justify-end">
+<div className="absolute inset-x-0 top-12 hidden h-44 rounded-[32px] bg-indigo-200/20 blur-3xl lg:block"></div>
 <img
-src="[images.unsplash.com](https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=1200&q=80)"
-alt="Interior apartament"
-className="h-[320px] w-full max-w-xl rounded-[32px] object-cover shadow-2xl sm:h-[420px] lg:h-[520px]"
+src="https://images.unsplash.com/photo-1564013799919-ab600027ffc6?auto=format&fit=crop&w=1200&q=80"
+alt="Casă primitoare"
+className="relative h-[320px] w-full max-w-xl rounded-[32px] object-cover shadow-[0_35px_80px_-35px_rgba(15,23,42,0.35)] sm:h-[420px] lg:h-[520px]"
 />
 </div>
 </div>
 </section>
 
 {/* Features */}
-<section className="bg-[#f7f7f5] text-[#202020]">
+<section className="bg-slate-100 text-slate-900">
 <div className="mx-auto max-w-7xl px-6 py-20 md:px-8">
 <div className="mx-auto max-w-4xl text-center">
-<h2 className="text-4xl font-light leading-tight sm:text-5xl lg:text-7xl">
-Effortless rental management tools
+<p className="text-sm uppercase tracking-[0.28em] text-indigo-600">Funcționalități esențiale</p>
+<h2 className="mt-4 text-4xl font-semibold tracking-tight text-slate-900 sm:text-5xl">
+Tot ce ai nevoie pentru administrare eficientă
 </h2>
-<p className="mt-6 text-lg leading-8 text-gray-600 sm:text-xl">
-All-in-one platform for documents, payments, and maintenance.
+<p className="mt-6 text-lg leading-8 text-slate-600 sm:text-xl">
+Organizează documente, emite facturi și gestionează solicitările de întreținere dintr-un singur loc.
 </p>
 </div>
 
@@ -196,11 +149,13 @@ All-in-one platform for documents, payments, and maintenance.
 {features.map((item, index) => (
 <div
 key={index}
-className="rounded-[28px] border border-gray-200 bg-white p-8 shadow-[0_10px_35px_rgba(0,0,0,0.08)] sm:p-10"
+className="rounded-[28px] border border-slate-200 bg-white p-8 shadow-sm transition hover:-translate-y-1 hover:shadow-lg sm:p-10"
 >
-<div className="text-3xl">{item.icon}</div>
-<h3 className="mt-6 text-2xl font-semibold">{item.titlu}</h3>
-<p className="mt-4 text-lg leading-8 text-gray-600">{item.text}</p>
+<div className="flex h-14 w-14 items-center justify-center rounded-3xl bg-indigo-100 text-3xl">
+{item.icon}
+</div>
+<h3 className="mt-6 text-2xl font-semibold text-slate-900">{item.titlu}</h3>
+<p className="mt-4 text-base leading-7 text-slate-600">{item.text}</p>
 </div>
 ))}
 </div>
@@ -208,35 +163,39 @@ className="rounded-[28px] border border-gray-200 bg-white p-8 shadow-[0_10px_35p
 </section>
 
 {/* ⇣ NOUA SECTIUNE DE CHIRIASI ⇣ */}
-<section className="bg-[#f7f7f5] text-[#202020]">
+<section className="bg-white text-slate-900">
 <div className="mx-auto max-w-7xl px-6 py-20 md:px-8">
-<p className="text-center text-sm uppercase tracking-[0.25em] text-gray-500">
-Current Tenants
-</p>
-
-<h2 className="mt-4 text-center text-4xl font-light leading-tight sm:text-5xl lg:text-7xl">
+<div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+<div>
+<p className="text-sm uppercase tracking-[0.28em] text-indigo-600">Chiriași</p>
+<h2 className="mt-3 text-4xl font-semibold tracking-tight sm:text-5xl">
 Chiriași înregistrați în sistem
 </h2>
-
+<p className="mt-4 max-w-2xl text-base leading-7 text-slate-600">
+Verifică rapid lista de chiriași, apartamentele alocate și datele de contact pentru fiecare locatar.</p>
+</div>
 {eroare && (
-<p className="mt-6 text-center text-red-600 text-lg">{eroare}</p>
+<p className="rounded-3xl border border-red-200 bg-red-50 px-5 py-3 text-sm text-red-700">{eroare}</p>
 )}
+</div>
 
-<div className="mt-10 grid gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+<div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
 {chiriasi.length > 0 ? (
 chiriasi.map((ch) => (
 <div
 key={ch.id}
-className="rounded-[28px] border border-gray-200 bg-white p-6 shadow-md hover:shadow-lg transition"
+className="rounded-[28px] border border-slate-200 bg-slate-50 p-6 shadow-sm transition hover:shadow-lg"
 >
-<h3 className="text-xl font-semibold mb-2 text-gray-800">{ch.nume}</h3>
-<p className="text-gray-600 text-sm">Apartament: {ch.apartament_numar || '–'}</p>
-<p className="text-gray-600 text-sm">Telefon: {ch.telefon || '—'}</p>
-<p className="text-gray-600 text-sm">Email: {ch.email || '—'}</p>
+<div className="flex items-center justify-between gap-4">
+<h3 className="text-xl font-semibold text-slate-900">{ch.nume}</h3>
+<span className="rounded-full bg-indigo-100 px-3 py-1 text-sm font-semibold text-indigo-700">Ap. {ch.apartament_numar || '–'}</span>
+</div>
+<p className="mt-4 text-sm leading-6 text-slate-600">Telefon: <span className="font-medium text-slate-900">{ch.telefon || '—'}</span></p>
+<p className="mt-2 text-sm leading-6 text-slate-600">Email: <span className="font-medium text-slate-900">{ch.email || '—'}</span></p>
 </div>
 ))
 ) : (
-<p className="col-span-full text-center text-gray-500 text-md mt-8">
+<p className="col-span-full mt-8 rounded-3xl border border-slate-200 bg-slate-50 px-6 py-8 text-center text-slate-600">
 Nu există chiriași înregistrați momentan.
 </p>
 )}
@@ -246,11 +205,26 @@ Nu există chiriași înregistrați momentan.
 {/* ⇡ SFÂRȘIT SECTIUNE DE CHIRIASI ⇡ */}
 
 {/* Restul secțiunilor */}
-<section className="bg-[#1f1f1f] text-white">
-<div className="mx-auto max-w-7xl px-6 py-24 text-center md:px-8">
-<p className="text-sm uppercase tracking-[0.3em] text-gray-400">Reliability</p>
-<div className="mt-8 text-6xl font-light sm:text-7xl">99.9%</div>
-<p className="mt-6 text-xl text-gray-300 sm:text-2xl">System uptime</p>
+<section className="bg-slate-50 text-slate-900">
+<div className="mx-auto max-w-7xl px-6 py-24 md:px-8">
+<div className="rounded-[32px] border border-slate-200 bg-white p-10 shadow-sm sm:p-14">
+<div className="grid gap-10 lg:grid-cols-3 lg:items-center lg:gap-8">
+<div className="lg:col-span-2">
+<p className="text-sm uppercase tracking-[0.28em] text-indigo-600">Stabilitate</p>
+<h2 className="mt-4 text-4xl font-semibold tracking-tight text-slate-900 sm:text-5xl">
+99.9% uptime pentru aplicația ta de administrare
+</h2>
+<p className="mt-5 max-w-2xl text-base leading-7 text-slate-600">
+Construim o platformă fiabilă, cu performanță constantă și acces rapid la date, astfel încât tu să te concentrezi pe gestionarea proprietăților.
+</p>
+</div>
+<div className="rounded-[28px] bg-indigo-50 p-8 text-center">
+<p className="text-sm uppercase tracking-[0.3em] text-indigo-600">Disponibilitate</p>
+<div className="mt-6 text-6xl font-semibold text-indigo-700">99.9%</div>
+<p className="mt-4 text-sm leading-7 text-slate-600">Timp mediu de funcționare al platformei, susținut de o infrastructură sigură.</p>
+</div>
+</div>
+</div>
 </div>
 </section>
 

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import logo from './assets/logo.png';
+import Navbar from './Navbar';
 
 function Contact() {
   const [nume, setNume] = useState('');
@@ -47,21 +47,7 @@ function Contact() {
 
   return (
     <div className="min-h-screen bg-[#1f1f1f] text-white">
-      {/* Navbar */}
-      <nav className="sticky top-0 z-50 border-b border-white/10 bg-[#1f1f1f]/95 backdrop-blur">
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
-          <div className="flex items-center gap-3">
-            <img src={logo} alt="Logo" className="h-5 w-5 object-contain" />
-            <div>
-              <p className="text-sm font-semibold text-white">New Concept</p>
-              <p className="text-xs text-gray-400">Living</p>
-            </div>
-          </div>
-          <Link to="/" className="rounded-xl border border-white/20 px-5 py-2.5 text-sm font-medium hover:bg-white/10 transition">
-            &larr; Înapoi acasă
-          </Link>
-        </div>
-      </nav>
+      <Navbar />
 
       <div className="mx-auto max-w-2xl px-6 py-20">
         <p className="text-sm uppercase tracking-[0.25em] text-gray-400 text-center">Contact</p>

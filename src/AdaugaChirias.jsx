@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import Navbar from './Navbar';
 
 function AdaugaChirias() {
   const [nume, setNume] = useState('');
@@ -16,98 +17,97 @@ function AdaugaChirias() {
     }
 
     try {
-      // Am eliminat parantezele de markdown, lăsând doar linkul curat
       const response = await fetch('http://localhost:5001/api/chiriasi', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        // Am asigurat potrivirea datelor cu noua ta bază de date SQLite
-        body: JSON.stringify({ 
-          nume: nume, 
-          email: email, 
-          telefon: telefon, 
-          apartament_numar: ap 
+        body: JSON.stringify({
+          nume: nume,
+          apartament_id: ap,
+          email: email,
+          telefon: telefon
         }),
       });
 
-      const result = await response.json();
-
-      if (result.success) {
-        // Dacă serverul zice "success: true", ne întoarcem la pagina principală
+      if (response.ok) {
         navigate('/');
       } else {
-        setEroare('Eroare la salvare: ' + (result.error || 'Încearcă din nou.'));
+        setEroare('Eroare la salvarea chiriașului.');
       }
     } catch (err) {
-      setEroare('Eroare conexiune: Nu se poate contacta serverul.');
-      console.error(err);
+      setEroare('Nu mă pot conecta la server: ' + err.message);
     }
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 flex flex-col items-center pt-10">
-      <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-lg border-t-4 border-blue-500">
-        <h2 className="text-2xl font-bold mb-6 text-gray-800">Adaugă un chiriaș nou</h2>
+    <div className="min-h-screen bg-gray-100 text-black">
+      <Navbar />
+      <div className="flex flex-col items-center pt-10">
+        <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-lg border-t-4 border-indigo-500">
+          <h2 className="text-2xl font-bold mb-6 text-gray-800">Adaugă Chiriaș Nou</h2>
 
-        {eroare && (
-          <div className="mb-4 p-3 bg-red-100 text-red-700 rounded">
-            {eroare}
+          {eroare && (
+            <div className="mb-4 p-3 bg-red-100 text-red-700 rounded border border-red-200">
+              {eroare}
+            </div>
+          )}
+
+          <div className="space-y-4">
+            <div>
+              <label className="block text-gray-700 font-medium mb-1">Nume Complet *</label>
+              <input
+                type="text"
+                value={nume}
+                onChange={(e) => setNume(e.target.value)}
+                className="w-full border p-2 rounded focus:ring-2 focus:ring-indigo-500 text-black"
+                placeholder="ex: Ion Popescu"
+              />
+            </div>
+
+            <div>
+              <label className="block text-gray-700 font-medium mb-1">Număr Apartament *</label>
+              <input
+                type="text"
+                value={ap}
+                onChange={(e) => setAp(e.target.value)}
+                className="w-full border p-2 rounded focus:ring-2 focus:ring-indigo-500 text-black"
+                placeholder="ex: 12A"
+              />
+            </div>
+
+            <div>
+              <label className="block text-gray-700 font-medium mb-1">Email</label>
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="w-full border p-2 rounded focus:ring-2 focus:ring-indigo-500 text-black"
+                placeholder="email@exemplu.com"
+              />
+            </div>
+
+            <div>
+              <label className="block text-gray-700 font-medium mb-1">Telefon</label>
+              <input
+                type="text"
+                value={telefon}
+                onChange={(e) => setTelefon(e.target.value)}
+                className="w-full border p-2 rounded focus:ring-2 focus:ring-indigo-500 text-black"
+                placeholder="07xx xxx xxx"
+              />
+            </div>
           </div>
-        )}
 
-        <div className="mb-4">
-          <label className="block text-gray-700 font-medium mb-2">Nume complet *</label>
-          <input
-            value={nume}
-            onChange={(e) => setNume(e.target.value)}
-            type="text"
-            placeholder="ex: Ion Popescu"
-            className="w-full border p-2 rounded focus:ring-2 focus:ring-blue-500"
-          />
-        </div>
-
-        <div className="mb-4">
-          <label className="block text-gray-700 font-medium mb-2">Număr apartament *</label>
-          <input
-            value={ap}
-            onChange={(e) => setAp(e.target.value)}
-            type="text"
-            placeholder="ex: 12"
-            className="w-full border p-2 rounded focus:ring-2 focus:ring-blue-500"
-          />
-        </div>
-
-        <div className="mb-4">
-          <label className="block text-gray-700 font-medium mb-2">Email</label>
-          <input
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            type="email"
-            placeholder="ex: ion@email.com"
-            className="w-full border p-2 rounded focus:ring-2 focus:ring-blue-500"
-          />
-        </div>
-
-        <div className="mb-6">
-          <label className="block text-gray-700 font-medium mb-2">Telefon</label>
-          <input
-            value={telefon}
-            onChange={(e) => setTelefon(e.target.value)}
-            type="tel"
-            placeholder="ex: 0722123456"
-            className="w-full border p-2 rounded focus:ring-2 focus:ring-blue-500"
-          />
-        </div>
-
-        <div className="flex justify-between items-center mt-8">
-          <Link to="/" className="text-blue-600 font-medium hover:underline">
-            &larr; Înapoi
-          </Link>
-          <button
-            onClick={handleSave}
-            className="px-6 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition"
-          >
-            Salvează
-          </button>
+          <div className="flex justify-between items-center mt-8">
+            <Link to="/" className="text-indigo-600 font-medium hover:underline">
+              &larr; Înapoi
+            </Link>
+            <button
+              onClick={handleSave}
+              className="px-6 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700 transition shadow-sm"
+            >
+              Salvează Chiriaș
+            </button>
+          </div>
         </div>
       </div>
     </div>
