@@ -113,10 +113,22 @@ app.post('/api/chiriasi', (req, res) => {
     }
   });
 
+// Ruta pentru a șterge un chiriaș
 app.delete('/api/chiriasi/:id', (req, res) => {
-  db.prepare('DELETE FROM chiriasi WHERE id = ?').run(req.params.id);
-  res.json({ success: true });
-});
+    try {
+      const info = db.prepare('DELETE FROM chiriasi WHERE id = ?').run(req.params.id);
+      
+      if (info.changes > 0) {
+        console.log(`🗑️ Chiriașul cu ID-ul ${req.params.id} a fost șters.`);
+        res.json({ success: true });
+      } else {
+        res.status(404).json({ error: 'Chiriașul nu a fost găsit.' });
+      }
+    } catch (err) {
+      console.error("Eroare la ștergerea chiriașului:", err);
+      res.status(500).json({ error: err.message });
+    }
+  });
 
 // APARTAMENTE
 app.get('/api/apartamente', (req, res) => {

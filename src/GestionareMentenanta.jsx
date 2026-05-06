@@ -7,7 +7,8 @@ function GestionareMentenanta() {
   const [loading, setLoading] = useState(true);
   const [eroare, setEroare] = useState('');
 
-  useEffect(() => {
+  const incarcaCereri = () => {
+    setLoading(true);
     fetch('http://localhost:5001/api/mentenanta')
       .then((res) => res.json())
       .then((data) => {
@@ -17,113 +18,123 @@ function GestionareMentenanta() {
           setEroare('Datele de la server nu sunt în formatul așteptat.');
         }
       })
-      .catch(() => setEroare('Nu am putut încărca cererile de întreținere.'))
+      .catch(() => setEroare('Nu am putut încărca cererile.'))
       .finally(() => setLoading(false));
+  };
+
+  useEffect(() => {
+    incarcaCereri();
   }, []);
 
-  const totalDeschise = cereri.filter((item) => item.status === 'Deschis' || item.status === 'Neînceput').length;
-  const totalInProgres = cereri.filter((item) => item.status === 'În progres').length;
-  const totalFinalizate = cereri.filter((item) => item.status === 'Finalizat' || item.status === 'Închis').length;
+  const schimbaStatus = async (id, statusNou) => {
+    try {
+      const res = await fetch(`http://localhost:5001/api/mentenanta/${id}/status`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ status: statusNou }),
+      });
+      if (res.ok) {
+        incarcaCereri(); 
+      }
+    } catch (err) {
+      alert("Nu am putut actualiza statusul.");
+    }
+  };
+
+  const totalNoi = cereri.filter((item) => item.status === 'Nouă').length;
+  const totalInProgres = cereri.filter((item) => item.status === 'În lucru').length;
+  const totalFinalizate = cereri.filter((item) => item.status === 'Rezolvată').length;
 
   return (
     <div className="min-h-screen bg-slate-50">
       <Navbar />
       <div className="py-10 px-4 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-6xl">
-          <div className="mb-8 rounded-[32px] border border-slate-200 bg-white p-8 shadow-sm sm:p-10">
+          {}
+          <div className="mb-8 rounded-[32px] border border-slate-200 bg-white p-8 shadow-sm">
             <div className="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
               <div>
-                <p className="text-sm uppercase tracking-[0.3em] text-indigo-600">Cereri întreținere</p>
-                <h1 className="mt-3 text-3xl font-semibold text-slate-900 sm:text-4xl">
-                  Gestionați rapid toate solicitările de întreținere
-                </h1>
-                <p className="mt-4 max-w-2xl text-base leading-7 text-slate-600">
-                  Vizualizați statusul solicitărilor, prioritizați intervențiile și creați rapid cereri noi.
-                </p>
+                <p className="text-sm uppercase tracking-[0.3em] text-indigo-600">Admin Panel</p>
+                <h1 className="mt-3 text-3xl font-semibold text-slate-900">Mentenanță Active</h1>
               </div>
-              <Link
-                to="/raporteaza-problema"
-                className="inline-flex items-center justify-center rounded-full bg-indigo-600 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-indigo-500/20 transition hover:bg-indigo-700"
-              >
-                + Adaugă cerere întreținere
+              <Link to="/raporteaza-problema" className="rounded-full bg-indigo-600 px-6 py-3 text-sm font-semibold text-white hover:bg-indigo-700 transition">
+                + Adaugă cerere
               </Link>
             </div>
           </div>
 
-          {eroare && (
-            <div className="mb-6 rounded-3xl border border-red-200 bg-red-50 px-5 py-4 text-sm text-red-700">
-              {eroare}
-            </div>
-          )}
-
-          <div className="grid gap-6 lg:grid-cols-[1.5fr_1fr]">
-            <div className="rounded-[32px] border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
-              <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-                <div>
-                  <h2 className="text-xl font-semibold text-slate-900">Lista cererilor</h2>
-                  <p className="mt-2 text-sm text-slate-500">Urmărește ce trebuie rezolvat și ce este deja finalizat.</p>
-                </div>
-                <span className="rounded-full bg-slate-100 px-4 py-2 text-sm font-semibold text-slate-700">
-                  {loading ? 'Se încarcă…' : `${cereri.length} cereri`}
-                </span>
-              </div>
-
-              {loading ? (
-                <div className="mt-10 rounded-[28px] border border-dashed border-slate-200 bg-slate-50 p-8 text-center text-slate-500">
-                  Se încarcă cererile...
-                </div>
-              ) : cereri.length === 0 ? (
-                <div className="mt-10 rounded-[28px] border border-dashed border-slate-200 bg-slate-50 p-8 text-center text-slate-600">
-                  Nu există cereri de întreținere.
-                </div>
-              ) : (
-                <div className="mt-6 space-y-4">
-                  {cereri.map((cerere) => (
-                    <div
-                      key={cerere.id}
-                      className="rounded-[28px] border border-slate-200 bg-slate-50 p-5 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
-                    >
-                      <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
-                        <div>
-                          <p className="text-sm font-semibold uppercase tracking-[0.2em] text-indigo-600">{cerere.prioritate || 'Normal'}</p>
-                          <h3 className="mt-2 text-lg font-semibold text-slate-900">{cerere.subiect || 'Solicitare întreținere'}</h3>
-                          <p className="mt-2 text-sm leading-6 text-slate-600">{cerere.descriere || 'Descrierea problemei nu este disponibilă.'}</p>
+          <div className="grid gap-6 lg:grid-cols-[2fr_1fr]">
+            {}
+            <div className="rounded-[32px] border border-slate-200 bg-white p-6 shadow-sm">
+              <h2 className="text-xl font-semibold text-slate-900 mb-6">Solicitări Primite</h2>
+              
+              <div className="space-y-4">
+                {cereri.map((cerere) => (
+                  <div key={cerere.id} className="rounded-2xl border border-slate-100 bg-slate-50 p-5">
+                    <div className="flex flex-col md:flex-row gap-6">
+                      {}
+                      {cerere.poza && (
+                        <div className="h-32 w-32 shrink-0 overflow-hidden rounded-xl border border-slate-200 bg-white">
+                          <img 
+                            src={`http://localhost:5001${cerere.poza}`} 
+                            alt="Problema" 
+                            className="h-full w-full object-cover"
+                            onError={(e) => e.target.style.display='none'} // Ascunde dacă imaginea nu se încarcă
+                          />
                         </div>
-                        <div className="space-y-2 text-right text-sm text-slate-600">
-                          <p>Status: <span className="font-semibold text-slate-900">{cerere.status || 'Deschis'}</span></p>
-                          <p>Data: <span className="font-semibold text-slate-900">{cerere.data || '—'}</span></p>
+                      )}
+
+                      <div className="flex-1">
+                        <div className="flex items-center justify-between">
+                          <span className={`text-xs font-bold uppercase tracking-wider px-2 py-1 rounded ${cerere.status === 'Nouă' ? 'bg-orange-100 text-orange-600' : 'bg-green-100 text-green-600'}`}>
+                            {cerere.status}
+                          </span>
+                          <span className="text-xs text-slate-400">{cerere.data_crearii}</span>
+                        </div>
+                        
+                        <h3 className="mt-2 text-lg font-bold text-slate-900">{cerere.titlu}</h3>
+                        <p className="mt-1 text-sm text-slate-600 leading-relaxed">{cerere.descriere}</p>
+                        
+                        {}
+                        <div className="mt-4 flex gap-2">
+                          <button 
+                            onClick={() => schimbaStatus(cerere.id, 'În lucru')}
+                            className="text-xs font-semibold bg-white border border-slate-200 px-3 py-1.5 rounded-lg hover:bg-indigo-50 hover:text-indigo-600 transition"
+                          >
+                            Setează "În lucru"
+                          </button>
+                          <button 
+                            onClick={() => schimbaStatus(cerere.id, 'Rezolvată')}
+                            className="text-xs font-semibold bg-white border border-slate-200 px-3 py-1.5 rounded-lg hover:bg-green-50 hover:text-green-600 transition"
+                          >
+                            Marchează Finalizat
+                          </button>
                         </div>
                       </div>
                     </div>
-                  ))}
-                </div>
-              )}
+                  </div>
+                ))}
+              </div>
             </div>
 
+            {}
             <div className="space-y-6">
-              <div className="rounded-[32px] border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
-                <h2 className="text-xl font-semibold text-slate-900">Rezumat rapid</h2>
-                <div className="mt-6 grid gap-4 sm:grid-cols-3">
-                  <div className="rounded-3xl bg-slate-50 p-4 text-center">
-                    <p className="text-sm uppercase tracking-[0.2em] text-slate-500">Deschise</p>
-                    <p className="mt-3 text-3xl font-semibold text-slate-900">{loading ? '–' : totalDeschise}</p>
+              <div className="rounded-[32px] border border-slate-200 bg-white p-8 shadow-sm">
+                <h2 className="text-xl font-semibold text-slate-900 mb-6">Statistici</h2>
+                <div className="space-y-4">
+                  <div className="flex justify-between items-center p-4 bg-orange-50 rounded-2xl">
+                    <span className="text-sm font-medium text-orange-700">Cereri Noi</span>
+                    <span className="text-2xl font-bold text-orange-700">{totalNoi}</span>
                   </div>
-                  <div className="rounded-3xl bg-slate-50 p-4 text-center">
-                    <p className="text-sm uppercase tracking-[0.2em] text-slate-500">În progres</p>
-                    <p className="mt-3 text-3xl font-semibold text-slate-900">{loading ? '–' : totalInProgres}</p>
+                  <div className="flex justify-between items-center p-4 bg-blue-50 rounded-2xl">
+                    <span className="text-sm font-medium text-blue-700">În lucru</span>
+                    <span className="text-2xl font-bold text-blue-700">{totalInProgres}</span>
                   </div>
-                  <div className="rounded-3xl bg-slate-50 p-4 text-center">
-                    <p className="text-sm uppercase tracking-[0.2em] text-slate-500">Finalizate</p>
-                    <p className="mt-3 text-3xl font-semibold text-slate-900">{loading ? '–' : totalFinalizate}</p>
+                  <div className="flex justify-between items-center p-4 bg-green-50 rounded-2xl">
+                    <span className="text-sm font-medium text-green-700">Rezolvate</span>
+                    <span className="text-2xl font-bold text-green-700">{totalFinalizate}</span>
                   </div>
                 </div>
-              </div>
-
-              <div className="rounded-[32px] border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
-                <h2 className="text-xl font-semibold text-slate-900">Sfat rapid</h2>
-                <p className="mt-4 text-sm leading-7 text-slate-600">
-                  Folosește butonul de adăugare pentru a introduce cereri noi imediat ce sunt identificate problemele. Prioritizează intervențiile critice pentru un management eficient.
-                </p>
               </div>
             </div>
           </div>
