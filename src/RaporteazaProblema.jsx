@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { motion } from 'framer-motion';
 import { Link, useNavigate } from 'react-router-dom';
 import Navbar from './Navbar';
 
@@ -106,13 +107,18 @@ function RaporteazaProblema() {
             <Link to="/" className="text-orange-600 font-medium">
               &larr; Înapoi
             </Link>
-            <button
+            <motion.button
               onClick={handleSave}
               disabled={loading}
-              className={`px-6 py-2 text-white rounded transition ${loading ? 'bg-gray-400' : 'bg-orange-500 hover:bg-orange-600'}`}
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.45, ease: 'easeOut' }}
+              whileHover={{ scale: loading ? 1 : 1.05 }}
+              whileTap={{ scale: loading ? 1 : 0.95 }}
+              className={`px-6 py-2 text-white rounded-lg transition-all duration-200 shadow-lg ${loading ? 'bg-gray-400 cursor-not-allowed shadow-none' : 'bg-gradient-to-r from-orange-500 via-orange-600 to-red-500 hover:shadow-[0_0_25px_rgba(251,146,60,0.45)]'}`}
             >
               {loading ? 'Se trimite...' : 'Trimite'}
-            </button>
+            </motion.button>
           </div>
         </div>
       </div>
