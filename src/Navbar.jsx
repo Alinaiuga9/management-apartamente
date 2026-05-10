@@ -21,15 +21,19 @@ function Navbar() {
 
   return (
     <nav className="sticky top-0 z-50 bg-white/95 shadow-sm border-b border-slate-200 backdrop-blur-md">
-      <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
-        <Link to="/" className="flex items-center">
+      <div className="mx-auto flex max-w-7xl items-center justify-center px-6 py-4">
+        <Link to="/" className="flex items-center gap-5">
+          <svg width="40" height="40" viewBox="0 0 40 40" rx="10" fill="none" className="flex-shrink-0">
+            <rect width="40" height="40" rx="10" fill="#FEF08A"/>
+            <path d="M12 22h16M12 22v8h4v-4h8v4h4v-8M20 12l-8 6v4h16v-4l-8-6Z" stroke="#92400E" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" fill="none"/>
+          </svg>
           <div>
-            <p className="text-sm font-semibold text-slate-900 leading-tight">New Concept</p>
-            <p className="text-xs uppercase tracking-[0.35em] text-slate-500">Living</p>
+            <p className="text-sm font-bold text-slate-900 leading-tight">NCL</p>
+            <p className="text-xs uppercase tracking-[0.2em] text-slate-500">Living</p>
           </div>
         </Link>
 
-        <div className="hidden md:flex items-center gap-5 text-sm font-medium text-slate-700">
+        <div className="hidden md:flex items-center gap-5 text-sm font-medium text-slate-700 ml-auto">
           <Link to="/" className="hover:text-slate-900 transition">Acasă</Link>
           <Link to="/contact" className="hover:text-slate-900 transition">Contact</Link>
           <Link to="/facturi" className="hover:text-slate-900 transition">Gestionare Facturi</Link>
@@ -59,9 +63,11 @@ function Navbar() {
           )}
         </div>
 
-        <button
+        <motion.button
           onClick={() => setMeniuDeschis(!meniuDeschis)}
-          className="flex h-11 w-11 items-center justify-center rounded-2xl border border-slate-200 bg-slate-50 text-slate-700 transition hover:bg-slate-100 md:hidden"
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          className="flex h-11 w-11 items-center justify-center rounded-2xl bg-yellow-300 text-amber-900 shadow-md transition duration-200 hover:bg-yellow-400 md:hidden"
           aria-label="Meniu mobil"
         >
           <svg className="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -69,7 +75,7 @@ function Navbar() {
             <path d="M4 12h16" />
             <path d="M4 17h16" />
           </svg>
-        </button>
+        </motion.button>
       </div>
 
       {meniuDeschis && (
