@@ -87,7 +87,6 @@ db.exec(`
   );
 `);
 
-// CHIRIASI
 app.get('/api/chiriasi', (req, res) => {
   try {
     const chiriasi = db.prepare('SELECT * FROM chiriasi').all();
@@ -99,7 +98,7 @@ app.get('/api/chiriasi', (req, res) => {
 
 app.post('/api/chiriasi', (req, res) => {
     try {
-      // Acum serverul caută EXACT cuvântul "apartament_numar" pe care îl trimite formularul
+    
       const { nume, email, telefon, apartament_numar } = req.body;
   
       const r = db.prepare(
@@ -113,7 +112,6 @@ app.post('/api/chiriasi', (req, res) => {
     }
   });
 
-// Ruta pentru a șterge un chiriaș
 app.delete('/api/chiriasi/:id', (req, res) => {
     try {
       const info = db.prepare('DELETE FROM chiriasi WHERE id = ?').run(req.params.id);
@@ -130,7 +128,6 @@ app.delete('/api/chiriasi/:id', (req, res) => {
     }
   });
 
-// APARTAMENTE
 app.get('/api/apartamente', (req, res) => {
   res.json(db.prepare('SELECT * FROM apartamente').all());
 });
@@ -148,7 +145,6 @@ app.delete('/api/apartamente/:id', (req, res) => {
   res.json({ success: true });
 });
 
-// FACTURI
 app.get('/api/facturi', (req, res) => {
   res.json(db.prepare('SELECT * FROM facturi').all());
 });
@@ -171,7 +167,6 @@ app.delete('/api/facturi/:id', (req, res) => {
   res.json({ success: true });
 });
 
-// MENTENANTA
 app.get('/api/mentenanta', (req, res) => {
   res.json(db.prepare('SELECT * FROM mentenanta').all());
 });
@@ -190,31 +185,50 @@ app.patch('/api/mentenanta/:id/status', (req, res) => {
   res.json({ success: true });
 });
 
-// DOCUMENTE
 app.get('/api/documente', (req, res) => {
   res.json(db.prepare('SELECT * FROM documente').all());
 });
 
 app.post('/api/documente', upload.single('fisier'), (req, res) => {
-  const { tip, chirias_id } = req.body;
-  if (!req.file) return res.status(400).json({ error: 'Niciun fișier primit' });
-  const r = db.prepare(
-    'INSERT INTO documente (nume_fisier, tip, cale, chirias_id) VALUES (?, ?, ?, ?)'
-  ).run(req.file.originalname, tip, `/uploads/${req.file.filename}`, chirias_id);
-  res.json({ success: true, id: r.lastInsertRowid });
-});
+    try {
+      const { nume_fisier, tip, chirias_id } = req.body;
+      
+      if (!req.file) {
+        return res.status(400).json({ success: false, error: 'Te rog să încarci un fișier valid.' });
+      }
+  
+      const cale = `/uploads/${req.file.filename}`;
+  
+      const info = db.prepare(`
+        INSERT INTO documente (nume_fisier, tip, chirias_id, cale)
+        VALUES (?, ?, ?, ?)
+      `).run(nume_fisier, tip, chirias_id, cale);
+  
+      console.log(`📄 Document nou adăugat: ${nume_fisier} (ID: ${info.lastInsertRowid})`);
+    
+      res.json({ success: true, id: info.lastInsertRowid });
+    } catch (err) {
+      console.error("Eroare la salvarea documentului:", err);
+      res.status(500).json({ success: false, error: err.message });
+    }
+  });
 
 app.delete('/api/documente/:id', (req, res) => {
-  const doc = db.prepare('SELECT * FROM documente WHERE id = ?').get(req.params.id);
-  if (doc) {
-    const filePath = '.' + doc.cale;
-    if (fs.existsSync(filePath)) fs.unlinkSync(filePath);
-    db.prepare('DELETE FROM documente WHERE id = ?').run(req.params.id);
-  }
-  res.json({ success: true });
-});
+    try {
+      const info = db.prepare('DELETE FROM documente WHERE id = ?').run(req.params.id);
+      
+      if (info.changes > 0) {
+        console.log(`🗑️ Documentul cu ID-ul ${req.params.id} a fost șters din baza de date.`);
+        res.json({ success: true });
+      } else {
+        res.status(404).json({ error: 'Documentul nu a fost găsit.' });
+      }
+    } catch (err) {
+      console.error("Eroare la ștergerea documentului:", err);
+      res.status(500).json({ success: false, error: err.message });
+    }
+  });
 
-// CONTACT
 app.get('/api/contact', (req, res) => {
   res.json(db.prepare('SELECT * FROM mesaje_contact ORDER BY id DESC').all());
 });

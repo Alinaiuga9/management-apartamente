@@ -6,7 +6,7 @@ import { AuthContext } from './AuthContext';
 function Navbar() {
   const [meniuDeschis, setMeniuDeschis] = useState(false);
   const navigate = useNavigate();
-  const { userRole, logout } = useContext(AuthContext);
+  const { userRole, logout } = useContext(AuthContext) || {};
   const roleLabel = userRole === 'manager' ? 'Manager' : userRole === 'chirias' ? 'Chiriaș' : null;
 
   const handleLogout = () => {
